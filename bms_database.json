@@ -1,0 +1,582 @@
+{
+  "_meta": {
+    "description": "BLE Battery BMS Protocol Database \u2014 known devices, default credentials, vulnerability signatures",
+    "version": "1.0",
+    "updated": "2026-07-29",
+    "usage": "Loaded by ble_scanner.py for efficient device identification and vulnerability assessment"
+  },
+  "protocols": [
+    {
+      "id": "jbd",
+      "name": "JBD / Xiaoxiang BMS",
+      "aliases": [
+        "LLT Power",
+        "Overkill Solar",
+        "Smart BMS"
+      ],
+      "match_rules": [
+        {
+          "type": "service_uuid",
+          "value": "0000ff00-0000-1000-8000-00805f9b34fb"
+        },
+        {
+          "type": "name_prefix",
+          "values": [
+            "DP04",
+            "SP0",
+            "XB-",
+            "JBD-",
+            "GW-"
+          ]
+        }
+      ],
+      "ble_service": "0000ff00-0000-1000-8000-00805f9b34fb",
+      "ble_write": "0000ff02-0000-1000-8000-00805f9b34fb",
+      "ble_notify": "0000ff01-0000-1000-8000-00805f9b34fb",
+      "test_command": "DDA50300FFFD77",
+      "auth": {
+        "type": "partial",
+        "default_password": null,
+        "notes": "Check vendor documentation for default credentials. Read access and FET control require NO authentication. Factory mode (config writes, EEPROM, protection thresholds) requires password 0x5678 which is the universal default and almost never changed."
+      },
+      "vulnerability": {
+        "severity": "critical",
+        "detail": "Reads fully open, FET control open, config writes protected by default password 0x5678 (rarely changed)",
+        "cve": null
+      },
+      "data_fields": [
+        "voltage",
+        "current",
+        "soc",
+        "remain_cap",
+        "cells",
+        "temps",
+        "protection",
+        "fets",
+        "cycles"
+      ],
+      "brands": [
+        "Eco Worthy",
+        "Ampere Time",
+        "Vatrer",
+        "Redodo",
+        "SOK Battery",
+        "CHINS",
+        "Power Queen",
+        "Lossigy",
+        "Weize"
+      ]
+    },
+    {
+      "id": "jk",
+      "name": "JK-BMS",
+      "aliases": [
+        "Jikong BMS"
+      ],
+      "match_rules": [
+        {
+          "type": "name_prefix",
+          "values": [
+            "JK_",
+            "JK-",
+            "JK B"
+          ]
+        },
+        {
+          "type": "service_uuid",
+          "value": "0000ffe0-0000-1000-8000-00805f9b34fb"
+        }
+      ],
+      "ble_service": "0000ffe0-0000-1000-8000-00805f9b34fb",
+      "ble_write": "0000ffe1-0000-1000-8000-00805f9b34fb",
+      "ble_notify": "0000ffe1-0000-1000-8000-00805f9b34fb",
+      "test_command": "4E5700130000000006030000000000006800000129",
+      "auth": {
+        "type": "none",
+        "default_password": null,
+        "notes": "No authentication. GATT characteristics fully open."
+      },
+      "vulnerability": {
+        "severity": "critical",
+        "detail": "No BLE authentication \u2014 full configuration access including cell balancing, protection thresholds, and FET control"
+      },
+      "data_fields": [
+        "voltage",
+        "current",
+        "soc",
+        "cells",
+        "temps",
+        "balancing",
+        "protection",
+        "fets",
+        "cycles",
+        "power"
+      ],
+      "brands": [
+        "JK-BMS",
+        "Generic LFP packs"
+      ]
+    },
+    {
+      "id": "daly",
+      "name": "Daly BMS",
+      "aliases": [
+        "Daly Smart BMS"
+      ],
+      "match_rules": [
+        {
+          "type": "name_prefix",
+          "values": [
+            "DL-",
+            "Daly"
+          ]
+        },
+        {
+          "type": "service_uuid",
+          "value": "0000fff0-0000-1000-8000-00805f9b34fb"
+        }
+      ],
+      "ble_service": "0000fff0-0000-1000-8000-00805f9b34fb",
+      "ble_write": "0000fff2-0000-1000-8000-00805f9b34fb",
+      "ble_notify": "0000fff1-0000-1000-8000-00805f9b34fb",
+      "test_command": "A5400090080000000000000000007D",
+      "auth": {
+        "type": "password",
+        "default_password": null,
+        "notes": "Check vendor documentation for default credentials. Default password '1234' rarely changed. Some models have no auth at all."
+      },
+      "vulnerability": {
+        "severity": "high",
+        "detail": "Default password '1234' \u2014 rarely changed by users, grants full BMS control"
+      },
+      "data_fields": [
+        "voltage",
+        "current",
+        "soc",
+        "cells",
+        "temps",
+        "protection",
+        "fets",
+        "cycles"
+      ],
+      "brands": [
+        "Daly",
+        "Various Chinese LFP packs"
+      ]
+    },
+    {
+      "id": "ant",
+      "name": "ANT BMS",
+      "aliases": [],
+      "match_rules": [
+        {
+          "type": "name_contains",
+          "values": [
+            "ANT-"
+          ]
+        },
+        {
+          "type": "name_prefix",
+          "values": [
+            "ANT"
+          ]
+        }
+      ],
+      "auth": {
+        "type": "none",
+        "default_password": null,
+        "notes": "No authentication on BLE interface"
+      },
+      "vulnerability": {
+        "severity": "critical",
+        "detail": "No BLE authentication \u2014 open access to battery management"
+      },
+      "data_fields": [
+        "voltage",
+        "current",
+        "soc",
+        "cells",
+        "temps"
+      ],
+      "brands": [
+        "ANT BMS"
+      ]
+    },
+    {
+      "id": "ecoflow",
+      "name": "EcoFlow",
+      "aliases": [],
+      "match_rules": [
+        {
+          "type": "mfg_id",
+          "value": 46517
+        },
+        {
+          "type": "name_prefix",
+          "values": [
+            "EF-",
+            "R33",
+            "R34",
+            "R35"
+          ]
+        }
+      ],
+      "auth": {
+        "type": "varies",
+        "encrypt_types": {
+          "0": {
+            "name": "None",
+            "severity": "critical",
+            "detail": "No encryption \u2014 all data readable, commands accepted"
+          },
+          "1": {
+            "name": "AES-CBC",
+            "severity": "high",
+            "detail": "Key derived from serial number (printed on device label) via MD5"
+          },
+          "7": {
+            "name": "ECDH + AES",
+            "severity": "low",
+            "detail": "Full ECDH key exchange + cloud account auth required"
+          }
+        },
+        "notes": "Encrypt type varies by model and firmware. Type 0/1 are common on older firmware."
+      },
+      "vulnerability": {
+        "severity": "varies",
+        "detail": "Depends on encrypt_type in advertisement: type 0 = fully open, type 1 = key from serial, type 7 = cloud auth required"
+      },
+      "serial_prefixes": {
+        "R331": "Delta 2",
+        "R335": "Delta 2 (alt)",
+        "R341": "Delta 2 Extra Battery",
+        "R351": "River 2",
+        "R361": "River 2 Max",
+        "R371": "River 2 Pro",
+        "Y711": "Delta Pro Ultra",
+        "Y721": "Delta Pro 3",
+        "HW51": "Wave 2",
+        "BX11": "Glacier"
+      },
+      "data_fields": [
+        "voltage",
+        "current",
+        "soc",
+        "cells_range",
+        "temps",
+        "cycles",
+        "soh",
+        "ports",
+        "inverter",
+        "mppt"
+      ],
+      "brands": [
+        "EcoFlow"
+      ]
+    },
+    {
+      "id": "victron",
+      "name": "Victron Energy",
+      "aliases": [
+        "VE.Direct",
+        "Victron SmartSolar",
+        "Victron SmartShunt"
+      ],
+      "match_rules": [
+        {
+          "type": "mfg_id",
+          "value": 737
+        }
+      ],
+      "auth": {
+        "type": "encrypted_advertisement",
+        "default_password": null,
+        "notes": "BLE advertisements are AES encrypted with per-device key. Requires pairing via Victron app or known encryption key."
+      },
+      "vulnerability": {
+        "severity": "none",
+        "detail": "Properly encrypted \u2014 advertisements use AES with device-specific key"
+      },
+      "data_fields": [
+        "voltage",
+        "current",
+        "soc",
+        "power",
+        "yield",
+        "state"
+      ],
+      "brands": [
+        "Victron Energy"
+      ]
+    },
+    {
+      "id": "renogy",
+      "name": "Renogy BMS",
+      "aliases": [
+        "Renogy Smart Battery"
+      ],
+      "match_rules": [
+        {
+          "type": "name_prefix",
+          "values": [
+            "BT-TH",
+            "Renogy",
+            "RNG"
+          ]
+        },
+        {
+          "type": "service_uuid",
+          "value": "0000ffd0-0000-1000-8000-00805f9b34fb"
+        }
+      ],
+      "auth": {
+        "type": "none",
+        "default_password": null,
+        "notes": "No BLE authentication"
+      },
+      "vulnerability": {
+        "severity": "critical",
+        "detail": "No authentication \u2014 full BLE access to battery monitoring and configuration"
+      },
+      "data_fields": [
+        "voltage",
+        "current",
+        "soc",
+        "cells",
+        "temps"
+      ],
+      "brands": [
+        "Renogy"
+      ]
+    },
+    {
+      "id": "pace",
+      "name": "PACE BMS",
+      "aliases": [],
+      "match_rules": [
+        {
+          "type": "name_contains",
+          "values": [
+            "PACE",
+            "P16S"
+          ]
+        }
+      ],
+      "auth": {
+        "type": "password",
+        "default_password": null,
+        "notes": "Check vendor documentation for default credentials. Default 6-digit password '000000'"
+      },
+      "vulnerability": {
+        "severity": "high",
+        "detail": "Default password '000000' \u2014 grants full BMS access if unchanged"
+      },
+      "data_fields": [
+        "voltage",
+        "current",
+        "soc",
+        "cells",
+        "temps",
+        "protection"
+      ],
+      "brands": [
+        "PACE",
+        "EG4"
+      ]
+    },
+    {
+      "id": "seplos",
+      "name": "Seplos BMS",
+      "aliases": [],
+      "match_rules": [
+        {
+          "type": "name_prefix",
+          "values": [
+            "SP0",
+            "SP1",
+            "SP2"
+          ]
+        },
+        {
+          "type": "name_contains",
+          "values": [
+            "Seplos"
+          ]
+        }
+      ],
+      "auth": {
+        "type": "none",
+        "default_password": null,
+        "notes": "No BLE authentication"
+      },
+      "vulnerability": {
+        "severity": "critical",
+        "detail": "No authentication \u2014 open BLE GATT access"
+      },
+      "data_fields": [
+        "voltage",
+        "current",
+        "soc",
+        "cells",
+        "temps"
+      ],
+      "brands": [
+        "Seplos"
+      ]
+    },
+    {
+      "id": "smart_bms",
+      "name": "Generic Smart BMS",
+      "aliases": [
+        "LiTime",
+        "Timeusb",
+        "Redodo v2"
+      ],
+      "match_rules": [
+        {
+          "type": "service_uuid",
+          "value": "00010203-0405-0607-0809-0a0b0c0d1912"
+        }
+      ],
+      "auth": {
+        "type": "none",
+        "default_password": null,
+        "notes": "No authentication \u2014 uses same open GATT service as JBD clones"
+      },
+      "vulnerability": {
+        "severity": "critical",
+        "detail": "No authentication \u2014 JBD-compatible protocol with fully open BLE access"
+      },
+      "data_fields": [
+        "voltage",
+        "current",
+        "soc",
+        "cells",
+        "temps",
+        "protection",
+        "fets"
+      ],
+      "brands": [
+        "LiTime",
+        "Timeusb",
+        "Redodo",
+        "generic Chinese LFP"
+      ]
+    },
+    {
+      "id": "tian",
+      "name": "TianPower BMS",
+      "aliases": [
+        "EG4 LifePower"
+      ],
+      "match_rules": [
+        {
+          "type": "name_contains",
+          "values": [
+            "Tian",
+            "TIAN",
+            "TP-"
+          ]
+        }
+      ],
+      "auth": {
+        "type": "password",
+        "default_password": null,
+        "notes": "Check vendor documentation for default credentials. Default password '123456'"
+      },
+      "vulnerability": {
+        "severity": "high",
+        "detail": "Default password '123456' \u2014 rarely changed"
+      },
+      "data_fields": [
+        "voltage",
+        "current",
+        "soc",
+        "cells",
+        "temps"
+      ],
+      "brands": [
+        "TianPower",
+        "EG4"
+      ]
+    },
+    {
+      "id": "heltec",
+      "name": "Heltec BMS",
+      "aliases": [
+        "Heltec Balancer"
+      ],
+      "match_rules": [
+        {
+          "type": "name_prefix",
+          "values": [
+            "Heltec",
+            "HLT",
+            "BL-"
+          ]
+        }
+      ],
+      "auth": {
+        "type": "none",
+        "default_password": null,
+        "notes": "No authentication"
+      },
+      "vulnerability": {
+        "severity": "critical",
+        "detail": "No BLE authentication"
+      },
+      "data_fields": [
+        "voltage",
+        "cells",
+        "balancing"
+      ],
+      "brands": [
+        "Heltec"
+      ]
+    }
+  ],
+  "scan_targets": {
+    "name_prefixes": [
+      "DP04",
+      "JK_",
+      "JK-",
+      "DL-",
+      "ANT",
+      "BT-TH",
+      "EF-",
+      "R33",
+      "R34",
+      "R35",
+      "SP0",
+      "SP1",
+      "GW-",
+      "XB-",
+      "JBD-",
+      "Heltec",
+      "HLT",
+      "BL-",
+      "RNG",
+      "TP-"
+    ],
+    "name_contains": [
+      "BMS",
+      "PACE",
+      "Seplos",
+      "Tian",
+      "TIAN",
+      "battery",
+      "Battery"
+    ],
+    "service_uuids": [
+      "0000ff00-0000-1000-8000-00805f9b34fb",
+      "0000ffe0-0000-1000-8000-00805f9b34fb",
+      "0000fff0-0000-1000-8000-00805f9b34fb",
+      "0000ffd0-0000-1000-8000-00805f9b34fb",
+      "00010203-0405-0607-0809-0a0b0c0d1912"
+    ],
+    "mfg_ids": [
+      46517,
+      737
+    ]
+  }
+}

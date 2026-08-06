@@ -1,0 +1,27 @@
+[Unit]
+Description=ShadowGrid Power Monitor
+After=network.target bluetooth.target
+Wants=bluetooth.target
+
+[Service]
+Type=simple
+# install.sh generates this unit automatically with the correct account and
+# paths. If installing by hand, set User/Group to the account that owns the
+# install directory and point WorkingDirectory/ExecStart at where you cloned it.
+User=mesh
+Group=mesh
+WorkingDirectory=/opt/shadowgrid
+ExecStart=/opt/shadowgrid/venv/bin/python /opt/shadowgrid/server.py
+# HOME kept inside the install dir so any ~ lookups are boot-safe (no login).
+Environment=HOME=/opt/shadowgrid
+Environment=PYTHONUNBUFFERED=1
+# Optional: override the listen address/port (server.py reads these).
+# Environment=FLASK_HOST=0.0.0.0
+# Environment=FLASK_PORT=5050
+Restart=on-failure
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

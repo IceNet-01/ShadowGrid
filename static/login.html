@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ShadowGrid - Login</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: 'Cascadia Code', 'Fira Code', monospace;
+    background: #0f1117;
+    color: #e4e6f0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.login-box {
+    background: #1a1d27;
+    border: 1px solid #2d3244;
+    border-radius: 16px;
+    padding: 40px 36px;
+    width: 100%;
+    max-width: 380px;
+    text-align: center;
+}
+.logo {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    color: #4f8cff;
+    margin-bottom: 6px;
+}
+.subtitle {
+    font-size: 11px;
+    color: #8b8fa3;
+    margin-bottom: 32px;
+    letter-spacing: 1px;
+}
+.input-wrap {
+    position: relative;
+    margin-bottom: 20px;
+}
+.input-wrap input {
+    width: 100%;
+    background: #232734;
+    border: 1px solid #2d3244;
+    border-radius: 10px;
+    padding: 14px 16px;
+    color: #e4e6f0;
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+.input-wrap input:focus {
+    border-color: #4f8cff;
+}
+.input-wrap input::placeholder {
+    color: #6b7394;
+}
+.btn {
+    width: 100%;
+    background: #4f8cff;
+    border: none;
+    border-radius: 10px;
+    padding: 14px;
+    color: #fff;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: background 0.2s;
+}
+.btn:hover { background: #3d7ae8; }
+.btn:active { background: #2d6ad8; }
+.btn:disabled { background: #3a3f50; color: #6b7394; cursor: not-allowed; }
+.error {
+    color: #f87171;
+    font-size: 12px;
+    margin-top: 16px;
+    min-height: 18px;
+}
+.lock-icon {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    background: rgba(79, 140, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.lock-icon svg {
+    width: 24px;
+    height: 24px;
+    fill: none;
+    stroke: #4f8cff;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+</style>
+</head>
+<body>
+<div class="login-box">
+    <div class="lock-icon">
+        <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    </div>
+    <div class="logo">SHADOWGRID</div>
+    <div class="subtitle">Power Monitoring System</div>
+    <form id="loginForm">
+        <div class="input-wrap">
+            <input type="password" id="password" placeholder="Password" autofocus autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn" id="loginBtn">Sign In</button>
+    </form>
+    <div class="error" id="error"></div>
+</div>
+<script>
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('loginBtn');
+    const pw = document.getElementById('password').value;
+    const err = document.getElementById('error');
+    if (!pw) { err.textContent = 'Enter a password'; return; }
+    btn.disabled = true;
+    btn.textContent = 'Signing in...';
+    err.textContent = '';
+    try {
+        const res = await fetch('/login', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({password: pw}),
+        });
+        const data = await res.json();
+        if (res.ok) {
+            window.location.href = '/';
+        } else {
+            err.textContent = data.error || 'Invalid password';
+            document.getElementById('password').value = '';
+            document.getElementById('password').focus();
+        }
+    } catch (e) {
+        err.textContent = 'Connection error';
+    }
+    btn.disabled = false;
+    btn.textContent = 'Sign In';
+});
+// Check if redirected with error
+if (window.location.search.includes('error=1')) {
+    document.getElementById('error').textContent = 'Invalid password';
+}
+</script>
+</body></html>
